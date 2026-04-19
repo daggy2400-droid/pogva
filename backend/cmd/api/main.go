@@ -33,7 +33,7 @@ func main() {
 	}
 
 	if err := database.RunMigrations(db, migrationsPath); err != nil {
-		log.Fatalf("Migrations failed: %v", err)
+		log.Printf("WARNING: Migration error (server will still start): %v", err)
 	}
 
 	hub := websocket.NewHub()

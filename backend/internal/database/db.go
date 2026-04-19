@@ -55,6 +55,8 @@ func Connect() (*sql.DB, error) {
 }
 
 func RunMigrations(db *sql.DB, migrationsPath string) error {
+	log.Printf("Running migrations from: %s", migrationsPath)
+
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		return fmt.Errorf("failed to create migration driver: %w", err)
@@ -69,10 +71,21 @@ func RunMigrations(db *sql.DB, migrationsPath string) error {
 		return fmt.Errorf("failed to create migrator: %w", err)
 	}
 
+	version, dirty, _ := m.Version()
+	log.Printf("Current migration version: %d, dirty: %v", version, dirty)
+
+	if dirty {
+		log.Printf("Dirty migration state detected at version %d — forcing version", version)
+		if err := m.Force(int(version)); err != nil {
+			return fmt.Errorf("failed to force migration version: %w", err)
+		}
+	}
+
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("migration failed: %w", err)
 	}
 
-	log.Println("Migrations applied successfully")
+	newVersion, _, _ := m.Version()
+	log.Printf("Migrations applied successfully — version: %d", newVersion)
 	return nil
 }

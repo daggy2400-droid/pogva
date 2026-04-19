@@ -9,13 +9,13 @@ FROM alpine:3.19
 RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /app
 
-# Binary
 COPY --from=builder /app/server .
-
-# Migrations sit next to the binary so the default path resolution works
 COPY --from=builder /app/internal/database/migrations ./internal/database/migrations
 
 RUN mkdir -p images uploads
+
+# Hardcode migrations path — always correct in this image
+ENV MIGRATIONS_PATH=/app/internal/database/migrations
 
 EXPOSE 8080
 CMD ["./server"]
