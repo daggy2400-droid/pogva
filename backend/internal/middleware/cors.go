@@ -7,14 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Production origins always allowed
+var productionOrigins = []string{
+	"https://sfasion.netlify.app",
+}
+
 func CORS() gin.HandlerFunc {
-	// ALLOWED_ORIGINS env: comma-separated list, e.g.
-	//   http://localhost:3000,https://samson-frontend.onrender.com
-	// Defaults to wildcard for local dev.
-	rawOrigins := os.Getenv("ALLOWED_ORIGINS")
+	// Build allowed set: production origins + any extras from ALLOWED_ORIGINS env
 	allowed := map[string]bool{}
-	if rawOrigins != "" {
-		for _, o := range strings.Split(rawOrigins, ",") {
+	for _, o := range productionOrigins {
+		allowed[o] = true
+	}
+	if raw := os.Getenv("ALLOWED_ORIGINS"); raw != "" {
+		for _, o := range strings.Split(raw, ",") {
 			allowed[strings.TrimSpace(o)] = true
 		}
 	}
@@ -22,10 +27,17 @@ func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.GetHeader("Origin")
 
-		if len(allowed) == 0 {
-			// Dev mode — allow all
+		if origin == "" || allowed[origin] {
+			// Same-origin or known origin
+			if origin != "" {
+				c.Header("Access-Control-Allow-Origin", origin)
+				c.Header("Vary", "Origin")
+			}
+		} else if len(allowed) == 0 {
+			// No restrictions configured — dev mode
 			c.Header("Access-Control-Allow-Origin", "*")
-		} else if allowed[origin] {
+		} else {
+			// Unknown origin in production — still allow (public API)
 			c.Header("Access-Control-Allow-Origin", origin)
 			c.Header("Vary", "Origin")
 		}
