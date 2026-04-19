@@ -1,0 +1,25 @@
+export const siteConfig = {
+  name: 'Samson Fashion',
+  tagline: 'Premium Ethiopian Footwear',
+  phone: '+251 911 000 000',
+  whatsapp: '+251911000000',
+  email: 'info@samson-fashion.com',
+  address: 'Addis Ababa, Ethiopia',
+  social: {
+    instagram: 'https://instagram.com/samson_fashion',
+    facebook: 'https://facebook.com/samson.fashion',
+    tiktok: 'https://tiktok.com/@samson_fashion',
+    telegram: 'https://t.me/samson_fashion',
+  },
+  categories: [
+    'Sandals',
+    'Sneakers',
+    'Boots',
+    'Formal Shoes',
+    'Casual Shoes',
+    "Women's Heels",
+    'Kids Shoes',
+  ],
+  currency: 'ETB',
+  locale: 'am',
+}

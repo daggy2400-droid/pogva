@@ -1,0 +1,29 @@
+version: '3.8'
+
+# No local postgres — using Nhost cloud database
+services:
+  backend:
+    build: ./backend
+    container_name: samson_backend
+    environment:
+      DATABASE_URL: postgres://postgres:[YOUR-PASSWORD]@oncujptgtbayawpovvgv.db.eu-central-1.nhost.run:5432/oncujptgtbayawpovvgv
+      SERVER_PORT: 8080
+      JWT_SECRET: change_me_in_production
+      MIGRATIONS_PATH: /app/internal/database/migrations
+      ALLOWED_ORIGINS: http://localhost:3000
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/images:/app/images
+      - ./backend/uploads:/app/uploads
+
+  frontend:
+    build: ./frontend
+    container_name: samson_frontend
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api/v1
+      NEXT_PUBLIC_WS_URL: ws://localhost:8080/ws
+    ports:
+      - "3000:3000"

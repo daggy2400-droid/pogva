@@ -1,0 +1,18 @@
+# ── Backend ───────────────────────────────────────────────────────────────────
+backend/.env
+backend/samson-api
+backend/api
+backend/server
+backend/uploads/
+backend/images/
+
+# ── Frontend ──────────────────────────────────────────────────────────────────
+frontend/.env.local
+frontend/.env*.local
+frontend/.next/
+frontend/node_modules/
+frontend/tsconfig.tsbuildinfo
+
+# ── General ───────────────────────────────────────────────────────────────────
+.DS_Store
+*.log
