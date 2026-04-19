@@ -1,4 +1,3 @@
-# Netlify config — for frontend-only deployment (backend must be hosted separately)
 [build]
   base    = "frontend"
   command = "npm run build"
@@ -9,9 +8,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Redirect all routes to Next.js
-[[redirects]]
-  from   = "/*"
-  to     = "/.netlify/functions/___netlify-handler"
-  status = 200
