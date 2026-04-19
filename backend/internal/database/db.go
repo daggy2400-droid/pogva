@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -17,7 +18,7 @@ var DB *sql.DB
 // Connect opens a Postgres connection.
 // It prefers DATABASE_URL (full connection string) over individual DB_* vars.
 func Connect() (*sql.DB, error) {
-	dsn := os.Getenv("DATABASE_URL")
+	dsn := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if dsn == "" {
 		// Fallback: build from individual vars (local dev without DATABASE_URL)
 		host := os.Getenv("DB_HOST")
