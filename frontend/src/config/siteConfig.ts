@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'Samson Fashion',
   tagline: 'Premium Ethiopian Footwear',
-  phone: '+251 911 000 000',
-  whatsapp: '+251911000000',
+  phone: '+251 091 623 879',
+  whatsapp: '251091623879',
   email: 'info@samson-fashion.com',
   address: 'Addis Ababa, Ethiopia',
   social: {

@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ShoppingBag } from 'lucide-react'
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8080/api/v1'
+import { apiClient } from '@/lib/api/client'
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState('')
@@ -19,23 +18,18 @@ export default function AdminLoginPage() {
     setError('')
 
     try {
-      const res = await fetch(`${API}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      })
+      const res = await apiClient.post('/auth/login', { username, password })
+      const data = res.data
 
-      const data = await res.json()
-
-      if (res.ok && data.data?.token) {
+      if (data.data?.token) {
         localStorage.setItem('admin_token', data.data.token)
         localStorage.setItem('admin_username', data.data.username)
         router.push('/admin/dashboard')
       } else {
         setError(data.error ?? 'Invalid credentials')
       }
-    } catch {
-      setError('Cannot connect to server')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Cannot connect to server')
     } finally {
       setLoading(false)
     }

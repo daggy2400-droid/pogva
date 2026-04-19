@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="relative aspect-[3/4] bg-gray-100 dark:bg-gray-800">
         {product.image_url ? (
           <img
-            src={product.image_url.startsWith('http') ? product.image_url : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') ?? 'http://localhost:8080'}${product.image_url}`}
+            src={product.image_url.startsWith('http') ? product.image_url : `https://pogva.onrender.com${product.image_url}`}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}

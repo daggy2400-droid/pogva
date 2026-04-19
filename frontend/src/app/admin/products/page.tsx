@@ -170,7 +170,7 @@ export default function AdminProductsPage() {
                     <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 shrink-0">
                       {p.image_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.image_url.startsWith('http') ? p.image_url : `http://localhost:8080${p.image_url}`} alt="" className="w-full h-full object-cover" />
+                        <img src={p.image_url.startsWith('http') ? p.image_url : `https://pogva.onrender.com${p.image_url}`} alt="" className="w-full h-full object-cover" />
                       ) : null}
                     </div>
                   </td>
